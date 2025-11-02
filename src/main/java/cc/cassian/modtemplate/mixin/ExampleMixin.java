@@ -1,6 +1,6 @@
-package dev.spagurder.modtemplate.mixin;
+package cc.cassian.modtemplate.mixin;
 
-import dev.spagurder.modtemplate.ModTemplate;
+import cc.cassian.modtemplate.ModTemplate;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

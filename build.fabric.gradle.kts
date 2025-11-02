@@ -10,8 +10,8 @@ tasks.named<ProcessResources>("processResources") {
     fun prop(name: String) = project.property(name) as String
 
     val props = HashMap<String, String>().apply {
-        this["version"] = prop("mod.version")
-        this["minecraft"] = prop("deps.minecraft")
+        this["version"] = prop("mod.version") + "+" + prop("deps.minecraft")
+        this["minecraft"] = prop("mod.mc_dep_fabric")
     }
 
     filesMatching(listOf("fabric.mod.json", "META-INF/neoforge.mods.toml", "META-INF/mods.toml")) {
@@ -32,8 +32,21 @@ jsonlang {
 }
 
 repositories {
-    mavenLocal()
-    maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
+    maven ( "https://repo.sleeping.town/" ) {
+        name = "Sisby Maven"
+    }
+    maven ( "https://maven.parchmentmc.org" ) {
+        name = "Parchment Mappings"
+    }
+    maven ( "https://maven.isxander.dev/releases") {
+        name = "Xander Maven"
+    }
+    maven ( "https://api.modrinth.com/maven") {
+        name = "Modrinth"
+    }
+    maven ( "https://maven.terraformersmc.com/releases/" ) {
+        name = "Terraformers (Mod Menu)"
+    }
 }
 
 dependencies {
@@ -44,17 +57,44 @@ dependencies {
             parchment("org.parchmentmc.data:parchment-${property("deps.parchment")}@zip")
     })
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric-api")}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
+
+    // Kaleido + McQoy
+    implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+    include("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+    modLocalRuntime("maven.modrinth:mcqoy:${property("deps.mcqoy")}")
+
+    // Mod Menu - required by McQoy
+    if (hasProperty("deps.modmenu"))
+        modLocalRuntime("com.terraformersmc:modmenu:${property("deps.modmenu")}")
+
+    // YACL - required by McQoy
+    if (hasProperty("deps.yacl")) {
+        modLocalRuntime("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
+    }
 
     val modules = listOf("transitive-access-wideners-v1", "registry-sync-v0", "resource-loader-v0")
-    for (it in modules) modImplementation(fabricApi.module("fabric-$it", property("deps.fabric-api") as String))
+    for (it in modules) modImplementation(fabricApi.module("fabric-$it", property("deps.fabric_api") as String))
 }
+
+
+configurations.all {
+    resolutionStrategy {
+        force("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
+        force("net.fabricmc:fabric-api:${property("deps.fabric_api")}")
+    }
+}
+
 
 fabricApi {
     configureDataGeneration() {
         outputDirectory = file("$rootDir/src/main/generated")
         client = true
     }
+}
+
+tasks.named("processResources") {
+    dependsOn(":${stonecutter.current.project}:stonecutterGenerate")
 }
 
 tasks {
@@ -92,10 +132,10 @@ publishMods {
     file = tasks.remapJar.map { it.archiveFile.get() }
     additionalFiles.from(tasks.remapSourcesJar.map { it.archiveFile.get() })
 
-    type = BETA
+    type = STABLE
     displayName = "${property("mod.name")} ${property("mod.version")} for ${stonecutter.current.version} Fabric"
     version = "${property("mod.version")}+${property("deps.minecraft")}-fabric"
-    changelog = provider { rootProject.file("CHANGELOG.md").readText() }
+    changelog = provider { rootProject.file("CHANGELOG-LATEST.md").readText() }
     modLoaders.add("fabric")
 
     modrinth {
@@ -104,6 +144,7 @@ publishMods {
         minecraftVersions.add(stonecutter.current.version)
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
+        optional("mcqoy")
     }
 
     curseforge {

@@ -1,8 +1,8 @@
-package dev.spagurder.modtemplate.fabric;
+package cc.cassian.modtemplate.fabric;
 
 //? fabric {
-import dev.spagurder.modtemplate.ExampleEventHandler; // sample_content
-import dev.spagurder.modtemplate.ModTemplate;
+import cc.cassian.modtemplate.ExampleEventHandler; // sample_content
+import cc.cassian.modtemplate.ModTemplate;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents; // sample_content
 import net.minecraft.server.level.ServerPlayer; // sample_content

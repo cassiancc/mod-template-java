@@ -1,7 +1,7 @@
-package dev.spagurder.modtemplate.fabric;
+package cc.cassian.modtemplate.fabric;
 
 //? fabric {
-import dev.spagurder.modtemplate.ModTemplate;
+import cc.cassian.modtemplate.ModTemplate;
 import net.fabricmc.api.ClientModInitializer;
 
 public class FabricClientEntrypoint implements ClientModInitializer {

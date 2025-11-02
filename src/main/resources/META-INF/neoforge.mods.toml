@@ -8,8 +8,8 @@ displayName = "Mod Template"
 version = "${version}"
 displayURL = ""
 logoFile = "assets/icon.png"
-authors = "A Mod Author"
-description = '''A Mod Description'''
+authors = "cassiancc"
+description = '''A mod template for Cassian's mods.'''
 
 [[mixins]]
 config = "modtemplate.mixins.json"
@@ -17,10 +17,11 @@ config = "modtemplate.mixins.json"
 [[dependencies.modtemplate]]
 modId = "neoforge"
 type = "required"
-versionRange = "[1,)"
+versionRange = "[21.1.181,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.modtemplate]]
 modId = "minecraft"
 type = "required"
+versionRange = "${minecraft}"

@@ -1,8 +1,8 @@
-package dev.spagurder.modtemplate.neoforge;
+package cc.cassian.modtemplate.neoforge;
 
 //? neoforge {
-/*import dev.spagurder.modtemplate.ExampleEventHandler; // sample_content
-import dev.spagurder.modtemplate.ModTemplate;
+/*import cc.cassian.modtemplate.ExampleEventHandler; // sample_content
+import cc.cassian.modtemplate.ModTemplate;
 import net.minecraft.server.level.ServerPlayer; // sample_content
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;

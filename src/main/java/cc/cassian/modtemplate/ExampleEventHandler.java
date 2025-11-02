@@ -1,4 +1,4 @@
-package dev.spagurder.modtemplate;
+package cc.cassian.modtemplate;
 
 import net.minecraft.server.level.ServerPlayer;
 

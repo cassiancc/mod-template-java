@@ -1,4 +1,4 @@
-package dev.spagurder.modtemplate;
+package cc.cassian.modtemplate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

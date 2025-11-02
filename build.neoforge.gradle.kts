@@ -8,8 +8,8 @@ tasks.named<ProcessResources>("processResources") {
     fun prop(name: String) = project.property(name) as String
 
     val props = HashMap<String, String>().apply {
-        this["version"] = prop("mod.version")
-        this["minecraft"] = prop("deps.minecraft")
+        this["version"] = prop("mod.version") + "+" + prop("deps.minecraft")
+        this["minecraft"] = prop("mod.mc_dep_forgelike")
     }
 
     filesMatching(listOf("fabric.mod.json", "META-INF/neoforge.mods.toml", "META-INF/mods.toml")) {
@@ -26,7 +26,21 @@ jsonlang {
 }
 
 repositories {
-    maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
+    maven ( "https://repo.sleeping.town/" ) {
+        name = "Sisby Maven"
+    }
+    maven ( "https://maven.parchmentmc.org" ) {
+        name = "Parchment Mappings"
+    }
+    maven ( "https://maven.isxander.dev/releases") {
+        name = "Xander Maven"
+    }
+    maven ( "https://api.modrinth.com/maven") {
+        name = "Modrinth"
+    }
+    maven ( "https://maven.terraformersmc.com/releases/" ) {
+        name = "Terraformers (Mod Menu)"
+    }
 }
 
 neoForge {
@@ -57,6 +71,19 @@ neoForge {
     }
     sourceSets["main"].resources.srcDir("src/main/generated")
 }
+
+dependencies {
+    // McQoy
+    implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+    jarJar("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+    implementation("maven.modrinth:mcqoy:${property("deps.mcqoy")}")
+
+    // YACL  - required by McQoy
+    if (hasProperty("deps.yacl")) {
+        runtimeOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
+    }
+}
+
 
 tasks {
     processResources {
@@ -98,9 +125,9 @@ publishMods {
     additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
 
     type = BETA
-    displayName = "${property("mod.name")} ${property("mod.version")} for ${stonecutter.current.version} Neoforge"
+    displayName = "${property("mod.name")} ${property("mod.version")} for ${stonecutter.current.version} NeoForge"
     version = "${property("mod.version")}+${property("deps.minecraft")}-neoforge"
-    changelog = provider { rootProject.file("CHANGELOG.md").readText() }
+    changelog = provider { rootProject.file("CHANGELOG-LATEST.md").readText() }
     modLoaders.add("neoforge")
 
     modrinth {
@@ -108,6 +135,7 @@ publishMods {
         accessToken = env.MODRINTH_API_KEY.orNull()
         minecraftVersions.add(stonecutter.current.version)
         minecraftVersions.addAll(additionalVersions)
+        optional("mcqoy")
     }
 
     curseforge {

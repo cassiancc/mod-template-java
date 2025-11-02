@@ -3,25 +3,25 @@
   "id": "modtemplate",
   "name": "Mod Template",
   "version": "${version}",
-  "authors": ["A Mod Author"],
+  "authors": ["cassiancc"],
   "contact": {
     "sources": "",
     "issues": ""
   },
-  "description": "A Mod Description",
+  "description": "",
   "icon": "assets/icon.png",
   "license": "MIT",
   "environment": "*",
   "accessWidener": "modtemplate.accesswidener",
   "entrypoints": {
     "main": [
-      "dev.spagurder.modtemplate.fabric.FabricEntrypoint"
+      "cc.cassian.modtemplate.fabric.FabricEntrypoint"
     ],
     "client": [
-      "dev.spagurder.modtemplate.fabric.FabricClientEntrypoint"
+      "cc.cassian.modtemplate.fabric.FabricClientEntrypoint"
     ],
     "fabric-datagen": [
-      "dev.spagurder.modtemplate.fabric.datagen.FabricDataGeneratorEntrypoint"
+      "cc.cassian.modtemplate.fabric.datagen.FabricDataGeneratorEntrypoint"
     ]
   },
   "mixins": [
