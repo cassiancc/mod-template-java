@@ -155,9 +155,9 @@ mod_id = require_input(f"Mod ID [{mod_id}]: ", mod_id, mod_id_validator)
 print("This should be a valid Java class name. I do not validate this.")
 mod_class = input("Mod Class [ModTemplate]: ").strip() or 'ModTemplate'
 
-print("The mod group may also be updated. If you are not spagurder, please change this.")
+print("The mod group may also be updated. If you are not Cassian, please change this.")
 print("Note: Be careful not to include reserved keywords- I do not check for them!")
-mod_group = require_input(f"Mod Group: [dev.spagurder]: ", 'dev.spagurder', package_name_validator)
+mod_group = require_input(f"Mod Group: [cc.cassian]: ", 'cc.cassian', package_name_validator)
 
 print("Who is you? I do not validate this at all. If you break the manifest files it's your fault.")
 mod_author = input("Mod Author []: ").strip()
@@ -191,23 +191,23 @@ if not confirm_settings:
 if remove_samples:
     print("Removing samples...")
     # Mixins
-    os.remove('src/main/java/dev/spagurder/modtemplate/mixin/ExampleMixin.java')
+    os.remove('src/main/java/cc/cassian/modtemplate/mixin/ExampleMixin.java')
     yeet_line('src/main/resources/modtemplate.mixins.json', 'ExampleMixin')
     # Datagen
     shutil.rmtree('src/main/generated', ignore_errors=True)
-    os.remove('src/main/java/dev/spagurder/modtemplate/fabric/datagen/ModRecipeProvider.java')
-    yeet_line('src/main/java/dev/spagurder/modtemplate/fabric/datagen/FabricDataGeneratorEntrypoint.java', 'sample_content')
+    os.remove('src/main/java/cc/cassian/modtemplate/fabric/datagen/ModRecipeProvider.java')
+    yeet_line('src/main/java/cc/cassian/modtemplate/fabric/datagen/FabricDataGeneratorEntrypoint.java', 'sample_content')
     # Event/AWs/ATs
-    os.remove('src/main/java/dev/spagurder/modtemplate/ExampleEventHandler.java')
-    yeet_line('src/main/java/dev/spagurder/modtemplate/fabric/FabricEntrypoint.java', 'sample_content')
-    yeet_line('src/main/java/dev/spagurder/modtemplate/neoforge/NeoforgeEntrypoint.java', 'sample_content')
+    os.remove('src/main/java/cc/cassian/modtemplate/ExampleEventHandler.java')
+    yeet_line('src/main/java/cc/cassian/modtemplate/fabric/FabricEntrypoint.java', 'sample_content')
+    yeet_line('src/main/java/cc/cassian/modtemplate/neoforge/NeoforgeEntrypoint.java', 'sample_content')
     yeet_line('src/main/resources/modtemplate.accesswidener', 'sample_content')
     yeet_line('src/main/resources/META-INF/accesstransformer.cfg', 'sample_content')
 
 if mod_class != 'ModTemplate':
     print('Renaming Mod Class File...')
-    os.rename('src/main/java/dev/spagurder/modtemplate/ModTemplate.java',
-              f'src/main/java/dev/spagurder/modtemplate/{mod_class}.java')
+    os.rename('src/main/java/cc/cassian/modtemplate/ModTemplate.java',
+              f'src/main/java/cc/cassian/modtemplate/{mod_class}.java')
 
 print('Renaming Resource Files...')
 os.rename('src/main/resources/modtemplate.accesswidener',
@@ -219,12 +219,12 @@ print('Performing mass search and replace...')
 MassReplace.replace('.', 'ModTemplate', mod_class)
 MassReplace.replace('.', 'Mod Template', mod_name)
 MassReplace.replace('.', 'modtemplate', mod_id)
-MassReplace.replace('.', 'dev.spagurder', mod_group)
+MassReplace.replace('.', 'cc.cassian', mod_group)
 MassReplace.replace('.', 'A Mod Author', mod_author)
 MassReplace.replace('.', 'A Mod Description', mod_description)
 
 print('Renaming directories/packages')
-move_package_group('src/main/java/', 'dev.spagurder', mod_group)
+move_package_group('src/main/java/', 'cc.cassian', mod_group)
 rename_modtemplate_dirs('src/main/java/', mod_id)
 
 print("All done!")
