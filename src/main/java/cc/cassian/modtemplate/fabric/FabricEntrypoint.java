@@ -1,6 +1,6 @@
 package cc.cassian.modtemplate.fabric;
 
-//? fabric {
+//? fabric || unobf {
 import cc.cassian.modtemplate.ExampleEventHandler; // sample_content
 import cc.cassian.modtemplate.ModTemplate;
 import net.fabricmc.api.ModInitializer;

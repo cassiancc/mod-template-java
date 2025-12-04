@@ -1,6 +1,6 @@
 package cc.cassian.modtemplate.fabric;
 
-//? fabric {
+//? fabric || unobf {
 import cc.cassian.modtemplate.Platform;
 import net.fabricmc.loader.api.FabricLoader;
 

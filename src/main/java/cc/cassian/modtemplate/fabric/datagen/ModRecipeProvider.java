@@ -1,6 +1,6 @@
 package cc.cassian.modtemplate.fabric.datagen;
 
-//? fabric {
+//? fabric || unobf {
 import cc.cassian.modtemplate.ModTemplate;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;

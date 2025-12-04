@@ -1,24 +1,39 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
-    id("net.neoforged.moddev")
-    id ("dev.kikugie.postprocess.jsonlang")
+    id("net.fabricmc.fabric-loom")
+    id("dev.kikugie.postprocess.jsonlang")
     id("me.modmuss50.mod-publish-plugin")
+    id("maven-publish")
 }
+
+val minecraft = stonecutter.current.version
+val mcVersion = stonecutter.current.project.substringBeforeLast('-')
 
 tasks.named<ProcessResources>("processResources") {
     fun prop(name: String) = project.property(name) as String
 
     val props = HashMap<String, String>().apply {
         this["version"] = prop("mod.version") + "+" + prop("deps.minecraft")
-        this["minecraft"] = prop("mod.mc_dep_forgelike")
+        this["minecraft"] = prop("mod.mc_dep_fabric")
     }
 
     filesMatching(listOf("fabric.mod.json", "META-INF/neoforge.mods.toml", "META-INF/mods.toml")) {
         expand(props)
     }
+
 }
 
-version = "${property("mod.version")}+${property("deps.minecraft")}-neoforge"
+tasks.named("processResources") {
+    dependsOn(":${stonecutter.current.project}:stonecutterGenerate")
+}
+
+version = "${property("mod.version")}+${property("deps.minecraft")}-fabric"
 base.archivesName = property("mod.id") as String
+
+//loom {
+//    accessWidenerPath = rootProject.file("src/main/resources/${property("mod.id")}.accesswidener")
+//}
 
 jsonlang {
     languageDirectories = listOf("assets/${property("mod.id")}/lang")
@@ -26,6 +41,10 @@ jsonlang {
 }
 
 repositories {
+    mavenLocal()
+    maven ( "https://maven.minecraftforge.net" ) {
+        name = "Minecraft Forge"
+    }
     maven {
         name = "shedaniel (Cloth Config)"
         url = uri("https://maven.shedaniel.me/")
@@ -102,55 +121,33 @@ repositories {
     }
 }
 
-neoForge {
-    version = property("deps.neoforge") as String
-    validateAccessTransformers = true
-
-    if (hasProperty("deps.parchment")) parchment {
-        val (mc, ver) = (property("deps.parchment") as String).split(':')
-        mappingsVersion = ver
-        minecraftVersion = mc
-    }
-
-    runs {
-        register("client") {
-            gameDirectory = file("run/")
-            client()
-        }
-        register("server") {
-            gameDirectory = file("run/")
-            server()
-        }
-    }
-
-    mods {
-        register(property("mod.id") as String) {
-            sourceSet(sourceSets["main"])
-        }
-    }
-    sourceSets["main"].resources.srcDir("src/main/generated")
-}
-
 dependencies {
-    // McQoy
-    implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
-    jarJar("folk.sisby:kaleido-config:${property("deps.kaleido")}")
-    implementation("maven.modrinth:mcqoy:${property("deps.mcqoy")}")
+    minecraft("com.mojang:minecraft:${property("deps.minecraft")}")
+    implementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
 
-    // YACL  - required by McQoy
-    if (hasProperty("deps.yacl")) {
-        runtimeOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
+    implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
+
+    implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+    include("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
     }
 }
 
+stonecutter {
+    replacements.string {
+        direction = eval(current.version, ">1.21.10")
+        replace("ResourceLocation", "Identifier")
+    }
+}
 
 tasks {
     processResources {
-        exclude("**/fabric.mod.json", "**/*.accesswidener", "**/mods.toml")
-    }
-
-    named("createMinecraftArtifacts") {
-        dependsOn("stonecutterGenerate")
+        exclude("**/neoforge.mods.toml", "**/mods.toml")
     }
 
     register<Copy>("buildAndCollect") {
@@ -161,15 +158,14 @@ tasks {
     }
 }
 
+loom.runs.named("server") {
+    isIdeConfigGenerated = false
+}
+
 java {
     withSourcesJar()
-    val javaCompat = if (stonecutter.eval(stonecutter.current.version, ">=1.20.5")) {
-        JavaVersion.VERSION_21
-    } else {
-        JavaVersion.VERSION_17
-    }
-    sourceCompatibility = javaCompat
-    targetCompatibility = javaCompat
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 val additionalVersionsStr = findProperty("publish.additionalVersions") as String?
@@ -181,20 +177,25 @@ val additionalVersions: List<String> = additionalVersionsStr
 
 publishMods {
     file = tasks.jar.map { it.archiveFile.get() }
-    additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
 
-    type = BETA
-    displayName = "${property("mod.name")} ${property("mod.version")} for ${stonecutter.current.version} NeoForge"
-    version = "${property("mod.version")}+${property("deps.minecraft")}-neoforge"
+    // one of BETA, ALPHA, STABLE
+    type = STABLE
+    displayName = "${property("mod.name")} ${property("mod.version")} for ${stonecutter.current.version} Fabric"
+    version = "${property("mod.version")}+${property("deps.minecraft")}-fabric"
     changelog = provider { rootProject.file("CHANGELOG-LATEST.md").readText() }
-    modLoaders.add("neoforge")
+    modLoaders.add("fabric")
 
     modrinth {
         projectId = property("publish.modrinth") as String
         accessToken = env.MODRINTH_API_KEY.orNull()
-        minecraftVersions.add(stonecutter.current.version)
+        if (!stonecutter.eval(mcVersion, ">1.21.10")) {
+            minecraftVersions.add(stonecutter.current.version)
+        } else {
+            minecraftVersions.add(property("deps.minecraft").toString())
+        }
         minecraftVersions.addAll(additionalVersions)
-        optional("mcqoy")
+        requires("fabric-api")
+        optional("modmenu")
     }
 
     curseforge {
@@ -202,5 +203,18 @@ publishMods {
         accessToken = env.CURSEFORGE_API_KEY.orNull()
         minecraftVersions.add(stonecutter.current.version)
         minecraftVersions.addAll(additionalVersions)
+        requires("fabric-api")
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "cc.cassian.item-descriptions"
+            artifactId = "item-descriptions-fabric"
+            version = "${property("mod.version")}+${property("deps.minecraft")}"
+
+            from(components["java"])
+        }
     }
 }
