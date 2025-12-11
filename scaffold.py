@@ -200,8 +200,6 @@ if remove_samples:
     # Event/AWs/ATs
     os.remove('src/main/java/dev/spagurder/modtemplate/ExampleEventHandler.java')
     yeet_line('src/main/java/dev/spagurder/modtemplate/fabric/FabricEntrypoint.java', 'sample_content')
-    yeet_line('src/main/java/dev/spagurder/modtemplate/neoforge/NeoforgeEntrypoint.java', 'sample_content')
-    yeet_line('src/main/resources/modtemplate.accesswidener', 'sample_content')
     yeet_line('src/main/resources/META-INF/accesstransformer.cfg', 'sample_content')
 
 if mod_class != 'ModTemplate':
@@ -210,8 +208,6 @@ if mod_class != 'ModTemplate':
               f'src/main/java/dev/spagurder/modtemplate/{mod_class}.java')
 
 print('Renaming Resource Files...')
-os.rename('src/main/resources/modtemplate.accesswidener',
-          f'src/main/resources/{mod_id}.accesswidener')
 os.rename('src/main/resources/modtemplate.mixins.json',
           f'src/main/resources/{mod_id}.mixins.json')
 

@@ -12,7 +12,6 @@
   "icon": "assets/icon.png",
   "license": "MIT",
   "environment": "*",
-  "accessWidener": "modtemplate.accesswidener",
   "entrypoints": {
     "main": [
       "dev.spagurder.modtemplate.fabric.FabricEntrypoint"
