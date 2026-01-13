@@ -119,6 +119,17 @@ repositories {
             includeGroupAndSubgroups("fuzs")
         }
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+              name = "Cassian's Maven"
+              url = uri("https://maven.cassian.cc")
+            }
+        }
+        filter {
+            includeGroupAndSubgroups("cc.cassian")
+        }
+    }
 }
 
 dependencies {
@@ -129,6 +140,7 @@ dependencies {
 
     implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
     include("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+    implementation("cc.cassian.rrv:reliable-recipe-viewer-fabric:${property("deps.rrv")}+${property("deps.minecraft")}")
 
 }
 
@@ -164,8 +176,8 @@ loom.runs.named("server") {
 
 java {
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 val additionalVersionsStr = findProperty("publish.additionalVersions") as String?

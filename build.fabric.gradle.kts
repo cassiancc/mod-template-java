@@ -106,6 +106,32 @@ repositories {
             includeGroupAndSubgroups("fuzs")
         }
     }
+    maven {
+        name = "Architectury"
+        url = uri("https://maven.architectury.dev/")
+        content {
+            includeGroup("dev.architectury")
+        }
+    }
+    maven {
+        name = "Jitpack"
+        url = uri("https://jitpack.io")
+        content {
+            includeGroup("com.github.Chocohead")
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+              name = "Cassian's Maven"
+              url = uri("https://maven.cassian.cc")
+            }
+        }
+        filter {
+            includeGroupAndSubgroups("cc.cassian")
+        }
+    }
+
 }
 
 dependencies {
@@ -131,6 +157,8 @@ dependencies {
     if (hasProperty("deps.yacl")) {
         modLocalRuntime("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
     }
+
+    modImplementation("cc.cassian.rrv:reliable-recipe-viewer-fabric:${property("deps.rrv")}+${property("deps.minecraft")}")
 
     val modules = listOf("transitive-access-wideners-v1", "registry-sync-v0", "resource-loader-v0")
     for (it in modules) modImplementation(fabricApi.module("fabric-$it", property("deps.fabric_api") as String))

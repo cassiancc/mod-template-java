@@ -100,6 +100,17 @@ repositories {
             includeGroupAndSubgroups("fuzs")
         }
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+              name = "Cassian's Maven"
+              url = uri("https://maven.cassian.cc")
+            }
+        }
+        filter {
+            includeGroupAndSubgroups("cc.cassian")
+        }
+    }
 }
 
 neoForge {
@@ -141,6 +152,8 @@ dependencies {
     if (hasProperty("deps.yacl")) {
         runtimeOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
     }
+
+    implementation("cc.cassian.rrv:reliable-recipe-viewer-neoforge:${property("deps.rrv")}+${property("deps.minecraft")}")
 }
 
 
@@ -163,10 +176,10 @@ tasks {
 
 java {
     withSourcesJar()
-    val javaCompat = if (stonecutter.eval(stonecutter.current.version, ">=1.20.5")) {
-        JavaVersion.VERSION_21
+    val javaCompat = if (stonecutter.eval(stonecutter.current.version, ">26")) {
+        JavaVersion.VERSION_25
     } else {
-        JavaVersion.VERSION_17
+        JavaVersion.VERSION_21
     }
     sourceCompatibility = javaCompat
     targetCompatibility = javaCompat

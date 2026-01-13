@@ -8,10 +8,10 @@ plugins {
     id("me.modmuss50.mod-publish-plugin") version "0.8.+" apply false
 }
 
-stonecutter active "1.21.11-unobf"
+stonecutter active "1.21.11-fabric"
 
 stonecutter parameters {
-    constants.match(node.metadata.project.substringAfterLast('-'), "fabric", "unobf", "neoforge")
+    constants.match(node.metadata.project.substringAfterLast('-'), "fabric", "neoforge")
     filters.include("**/*.fsh", "**/*.vsh")
 }
 

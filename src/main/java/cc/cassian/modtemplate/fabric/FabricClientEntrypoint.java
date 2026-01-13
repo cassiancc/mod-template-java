@@ -1,6 +1,6 @@
 package cc.cassian.modtemplate.fabric;
 
-//? fabric || unobf {
+//? fabric  {
 import cc.cassian.modtemplate.ModTemplate;
 import net.fabricmc.api.ClientModInitializer;
 
