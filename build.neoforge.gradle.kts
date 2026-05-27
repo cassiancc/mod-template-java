@@ -86,7 +86,7 @@ repositories {
         }
     }
     maven {
-        name = "Nucleoid Maven (Polymer)"
+        name = "Nucleoid Maven (Polymer/Trinkets)"
         url = uri("https://maven.nucleoid.xyz")
         content {
             includeGroupAndSubgroups("eu.pb4")
@@ -100,6 +100,13 @@ repositories {
             includeGroupAndSubgroups("fuzs")
         }
     }
+    maven {
+        name = "Kotlin For Forge"
+        url = uri("https://thedarkcolour.github.io/KotlinForForge/")
+        content {
+            includeGroupAndSubgroups("thedarkcolour")
+        }
+    }
     exclusiveContent {
         forRepository {
             maven {
@@ -111,10 +118,15 @@ repositories {
             includeGroupAndSubgroups("cc.cassian")
         }
     }
+    mavenCentral()
 }
 
 neoForge {
-    version = property("deps.neoforge") as String
+     enable {
+        version = property("deps.neoforge") as String
+        // Disable recompilation for performance reasons.
+        isDisableRecompilation = true
+    }
     validateAccessTransformers = true
 
     if (hasProperty("deps.parchment")) parchment {
@@ -146,14 +158,18 @@ dependencies {
     // McQoy
     implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
     jarJar("folk.sisby:kaleido-config:${property("deps.kaleido")}")
-    implementation("maven.modrinth:mcqoy:${property("deps.mcqoy")}")
 
     // YACL  - required by McQoy
     if (hasProperty("deps.yacl")) {
         runtimeOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
     }
+    if (hasProperty("deps.mcqoy")) {
+        implementation("maven.modrinth:mcqoy:${property("deps.mcqoy")}")
+    }
 
-    implementation("cc.cassian.rrv:reliable-recipe-viewer-neoforge:${property("deps.rrv")}+${property("deps.minecraft")}")
+    if (hasProperty("deps.rrv")) {
+        implementation("cc.cassian.rrv:reliable-recipe-viewer-neoforge:${property("deps.rrv")}+${property("deps.minecraft")}")
+    }
 }
 
 
@@ -176,10 +192,12 @@ tasks {
 
 java {
     withSourcesJar()
-    val javaCompat = if (stonecutter.eval(stonecutter.current.version, ">26")) {
+    val javaCompat = if (stonecutter.eval(stonecutter.current.version, ">=26")) {
         JavaVersion.VERSION_25
-    } else {
+    } else if (stonecutter.eval(stonecutter.current.version, ">=1.21")) {
         JavaVersion.VERSION_21
+    } else {
+        JavaVersion.VERSION_17
     }
     sourceCompatibility = javaCompat
     targetCompatibility = javaCompat
@@ -205,7 +223,7 @@ publishMods {
     modrinth {
         projectId = property("publish.modrinth") as String
         accessToken = env.MODRINTH_API_KEY.orNull()
-        minecraftVersions.add(stonecutter.current.version)
+        minecraftVersions.add(property("deps.minecraft") as String)
         minecraftVersions.addAll(additionalVersions)
         optional("mcqoy")
     }
@@ -213,7 +231,7 @@ publishMods {
     curseforge {
         projectId = property("publish.curseforge") as String
         accessToken = env.CURSEFORGE_API_KEY.orNull()
-        minecraftVersions.add(stonecutter.current.version)
+        minecraftVersions.add(property("deps.minecraft") as String)
         minecraftVersions.addAll(additionalVersions)
     }
 }
