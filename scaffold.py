@@ -155,9 +155,9 @@ mod_id = require_input(f"Mod ID [{mod_id}]: ", mod_id, mod_id_validator)
 print("This should be a valid Java class name. I do not validate this.")
 mod_class = input("Mod Class [ModTemplate]: ").strip() or 'ModTemplate'
 
-print("The mod group may also be updated. If you are not Cassian, please change this.")
+print("The mod group should also be updated.")
 print("Note: Be careful not to include reserved keywords- I do not check for them!")
-mod_group = require_input(f"Mod Group: [cc.cassian]: ", 'cc.cassian', package_name_validator)
+mod_group = require_input(f"Mod Group: [com.example]: ", 'com.example', package_name_validator)
 
 print("Who is you? I do not validate this at all. If you break the manifest files it's your fault.")
 mod_author = input("Mod Author []: ").strip()
@@ -191,23 +191,23 @@ if not confirm_settings:
 if remove_samples:
     print("Removing samples...")
     # Mixins
-    os.remove('src/main/java/cc/cassian/modtemplate/mixin/ExampleMixin.java')
-    yeet_line('src/main/resources/modtemplate.mixins.json', 'ExampleMixin')
+    os.remove('src/main/java/com/example/examplemod/mixin/ExampleMixin.java')
+    yeet_line('src/main/resources/examplemod.mixins.json', 'ExampleMixin')
     # Datagen
     shutil.rmtree('src/main/generated', ignore_errors=True)
-    os.remove('src/main/java/cc/cassian/modtemplate/fabric/datagen/ModRecipeProvider.java')
-    yeet_line('src/main/java/cc/cassian/modtemplate/fabric/datagen/FabricDataGeneratorEntrypoint.java', 'sample_content')
+    os.remove('src/main/java/com/example/examplemod/fabric/datagen/ModRecipeProvider.java')
+    yeet_line('src/main/java/com/example/examplemod/fabric/datagen/FabricDataGeneratorEntrypoint.java', 'sample_content')
     # Event/AWs/ATs
-    os.remove('src/main/java/cc/cassian/modtemplate/ExampleEventHandler.java')
-    yeet_line('src/main/java/cc/cassian/modtemplate/fabric/FabricEntrypoint.java', 'sample_content')
-    yeet_line('src/main/java/cc/cassian/modtemplate/neoforge/NeoforgeEntrypoint.java', 'sample_content')
-    yeet_line('src/main/resources/modtemplate.accesswidener', 'sample_content')
+    os.remove('src/main/java/com/example/examplemod/ExampleEventHandler.java')
+    yeet_line('src/main/java/com/example/examplemod/fabric/FabricEntrypoint.java', 'sample_content')
+    yeet_line('src/main/java/com/example/examplemod/neoforge/NeoforgeEntrypoint.java', 'sample_content')
+    yeet_line('src/main/resources/examplemod.accesswidener', 'sample_content')
     yeet_line('src/main/resources/META-INF/accesstransformer.cfg', 'sample_content')
 
 if mod_class != 'ModTemplate':
     print('Renaming Mod Class File...')
-    os.rename('src/main/java/cc/cassian/modtemplate/ModTemplate.java',
-              f'src/main/java/cc/cassian/modtemplate/{mod_class}.java')
+    os.rename('src/main/java/com/example/examplemod/ModTemplate.java',
+              f'src/main/java/com/example/examplemod/{mod_class}.java')
 
 print('Renaming Resource Files...')
 os.rename('src/main/resources/modtemplate.accesswidener',
@@ -219,7 +219,7 @@ print('Performing mass search and replace...')
 MassReplace.replace('.', 'ModTemplate', mod_class)
 MassReplace.replace('.', 'Mod Template', mod_name)
 MassReplace.replace('.', 'modtemplate', mod_id)
-MassReplace.replace('.', 'cc.cassian', mod_group)
+MassReplace.replace('.', 'com.example', mod_group)
 MassReplace.replace('.', 'A Mod Author', mod_author)
 MassReplace.replace('.', 'A Mod Description', mod_description)
 

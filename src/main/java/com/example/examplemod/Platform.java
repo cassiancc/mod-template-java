@@ -1,10 +1,10 @@
-package cc.cassian.modtemplate;
+package com.example.examplemod;
 
 //? fabric  {
-import cc.cassian.modtemplate.fabric.FabricPlatformImpl;
+import com.example.examplemod.fabric.FabricPlatformImpl;
 //?}
 //? neoforge {
-/*import cc.cassian.modtemplate.neoforge.NeoForgePlatformImpl;
+/*import com.example.examplemod.neoforge.NeoForgePlatformImpl;
 *///?}
 import java.nio.file.Path;
 

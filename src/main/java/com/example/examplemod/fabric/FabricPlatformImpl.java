@@ -1,7 +1,7 @@
-package cc.cassian.modtemplate.fabric;
+package com.example.examplemod.fabric;
 
 //? fabric  {
-import cc.cassian.modtemplate.Platform;
+import com.example.examplemod.Platform;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;

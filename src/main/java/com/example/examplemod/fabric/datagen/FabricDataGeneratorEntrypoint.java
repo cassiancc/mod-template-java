@@ -1,4 +1,4 @@
-package cc.cassian.modtemplate.fabric.datagen;
+package com.example.examplemod.fabric.datagen;
 
 //? fabric  {
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;

@@ -1,7 +1,7 @@
-package cc.cassian.modtemplate.fabric;
+package com.example.examplemod.fabric;
 
 //? fabric  {
-import cc.cassian.modtemplate.ModTemplate;
+import com.example.examplemod.ModTemplate;
 import net.fabricmc.api.ClientModInitializer;
 
 public class FabricClientEntrypoint implements ClientModInitializer {

@@ -1,7 +1,7 @@
-package cc.cassian.modtemplate.neoforge;
+package com.example.examplemod.neoforge;
 
 //? neoforge {
-/*import cc.cassian.modtemplate.Platform;
+/*import com.example.examplemod.Platform;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;

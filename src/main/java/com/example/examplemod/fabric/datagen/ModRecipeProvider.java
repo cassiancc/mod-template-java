@@ -1,7 +1,7 @@
-package cc.cassian.modtemplate.fabric.datagen;
+package com.example.examplemod.fabric.datagen;
 
 //? fabric  {
-import cc.cassian.modtemplate.ModTemplate;
+import com.example.examplemod.ModTemplate;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;

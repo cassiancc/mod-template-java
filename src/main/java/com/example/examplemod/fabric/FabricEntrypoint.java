@@ -1,8 +1,8 @@
-package cc.cassian.modtemplate.fabric;
+package com.example.examplemod.fabric;
 
 //? fabric  {
-import cc.cassian.modtemplate.ExampleEventHandler; // sample_content
-import cc.cassian.modtemplate.ModTemplate;
+import com.example.examplemod.ExampleEventHandler; // sample_content
+import com.example.examplemod.ModTemplate;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents; // sample_content
 import net.minecraft.server.level.ServerPlayer; // sample_content

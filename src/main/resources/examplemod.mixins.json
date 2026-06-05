@@ -1,5 +1,5 @@
 {
-  "package": "cc.cassian.modtemplate.mixin",
+  "package": "com.example.examplemod.mixin",
   "required": true,
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_21",

@@ -1,32 +1,35 @@
 {
   "schemaVersion": 1,
-  "id": "modtemplate",
-  "name": "Mod Template",
+  "id": "examplemod",
   "version": "${version}",
-  "authors": ["cassiancc"],
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "You!"
+  ],
   "contact": {
     "sources": "",
     "issues": ""
   },
-  "description": "",
   "icon": "assets/icon.png",
-  "license": "MIT",
+  "license": "${mod_license}",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "cc.cassian.modtemplate.fabric.FabricEntrypoint"
+      "com.example.examplemod.fabric.FabricEntrypoint"
     ],
     "client": [
-      "cc.cassian.modtemplate.fabric.FabricClientEntrypoint"
+      "com.example.examplemod.fabric.FabricClientEntrypoint"
     ],
     "fabric-datagen": [
-      "cc.cassian.modtemplate.fabric.datagen.FabricDataGeneratorEntrypoint"
+      "com.example.examplemod.fabric.datagen.FabricDataGeneratorEntrypoint"
     ]
   },
   "mixins": [
-    "modtemplate.mixins.json"
+    "examplemod.mixins.json"
   ],
   "depends": {
-    "fabric-api": "*"
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version_range}"
   }
 }

@@ -1,4 +1,4 @@
-package cc.cassian.modtemplate;
+package com.example.examplemod;
 
 import net.minecraft.server.level.ServerPlayer;
 
