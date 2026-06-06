@@ -210,15 +210,15 @@ if mod_class != 'ModTemplate':
               f'src/main/java/com/example/examplemod/{mod_class}.java')
 
 print('Renaming Resource Files...')
-os.rename('src/main/resources/modtemplate.accesswidener',
+os.rename('src/main/resources/examplemod.accesswidener',
           f'src/main/resources/{mod_id}.accesswidener')
-os.rename('src/main/resources/modtemplate.mixins.json',
+os.rename('src/main/resources/examplemod.mixins.json',
           f'src/main/resources/{mod_id}.mixins.json')
 
 print('Performing mass search and replace...')
 MassReplace.replace('.', 'ModTemplate', mod_class)
-MassReplace.replace('.', 'Mod Template', mod_name)
-MassReplace.replace('.', 'modtemplate', mod_id)
+MassReplace.replace('.', 'Example Mod', mod_name)
+MassReplace.replace('.', 'examplemod', mod_id)
 MassReplace.replace('.', 'com.example', mod_group)
 MassReplace.replace('.', 'A Mod Author', mod_author)
 MassReplace.replace('.', 'A Mod Description', mod_description)
